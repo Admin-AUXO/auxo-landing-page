@@ -1,6 +1,9 @@
 # Project-specific files
 CLAUDE.md
 
+# DNS zone files
+*.txt
+
 # OS files
 .DS_Store
 Thumbs.db
