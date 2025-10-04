@@ -41,22 +41,41 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // 3. tsParticles - Data Flow Visualization with Randomization
 
-    // Generate random configuration for unique experience
-    const randomParticleCount = Math.floor(Math.random() * 40) + 50; // 50-90 particles
-    const randomSpeed = (Math.random() * 0.6) + 0.3; // 0.3-0.9 speed
+    // Detect device type for performance optimization
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
+    const isTablet = window.matchMedia('(max-width: 1024px) and (min-width: 769px)').matches;
+
+    // Generate random configuration for unique experience - optimized for device
+    let randomParticleCount, randomSpeed, randomLinkDistance, randomConnectDistance;
+
+    if (isMobile) {
+        randomParticleCount = Math.floor(Math.random() * 15) + 20; // 20-35 particles for mobile
+        randomSpeed = (Math.random() * 0.3) + 0.2; // 0.2-0.5 slower speed
+        randomLinkDistance = Math.floor(Math.random() * 50) + 80; // 80-130px shorter links
+        randomConnectDistance = Math.floor(Math.random() * 50) + 80; // 80-130px
+    } else if (isTablet) {
+        randomParticleCount = Math.floor(Math.random() * 25) + 35; // 35-60 particles for tablet
+        randomSpeed = (Math.random() * 0.4) + 0.25; // 0.25-0.65 speed
+        randomLinkDistance = Math.floor(Math.random() * 70) + 90; // 90-160px
+        randomConnectDistance = Math.floor(Math.random() * 70) + 100; // 100-170px
+    } else {
+        randomParticleCount = Math.floor(Math.random() * 40) + 50; // 50-90 particles for desktop
+        randomSpeed = (Math.random() * 0.6) + 0.3; // 0.3-0.9 speed
+        randomLinkDistance = Math.floor(Math.random() * 100) + 100; // 100-200px
+        randomConnectDistance = Math.floor(Math.random() * 100) + 120; // 120-220px
+    }
+
     const randomDirection = ['right', 'left', 'top', 'bottom', 'top-right', 'top-left', 'bottom-right', 'bottom-left'][Math.floor(Math.random() * 8)];
-    const randomLinkDistance = Math.floor(Math.random() * 100) + 100; // 100-200px
     const randomOpacity = (Math.random() * 0.15) + 0.1; // 0.1-0.25
     const randomAnimSpeed = (Math.random() * 2) + 0.5; // 0.5-2.5 animation speed
     const randomShapeType = Math.random() > 0.5 ? ["circle", "square"] : Math.random() > 0.5 ? ["circle", "triangle"] : ["circle"];
-    const randomConnectDistance = Math.floor(Math.random() * 100) + 120; // 120-220px
 
     tsParticles.load("tsparticles", {
-        fpsLimit: 60,
+        fpsLimit: isMobile ? 30 : 60,
         interactivity: {
             events: {
                 onHover: {
-                    enable: true,
+                    enable: !isMobile,
                     mode: "connect",
                 },
                 resize: true,

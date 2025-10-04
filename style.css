@@ -29,6 +29,8 @@ body {
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
 }
 
 /* Data Flow Background Styling */
@@ -41,6 +43,13 @@ body {
     z-index: 0;
     opacity: 0.35;
     pointer-events: none;
+    will-change: transform;
+}
+
+@media (max-width: 768px) {
+    #tsparticles {
+        opacity: 0.25;
+    }
 }
 
 /* Hero Section */
@@ -226,12 +235,68 @@ footer a:hover::after {
 }
 
 /* Responsive Design */
+@media (max-width: 1024px) {
+    .founders-container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+}
+
 @media (max-width: 768px) {
+    .hero h1 {
+        font-size: clamp(1.5rem, 5vw, 2rem);
+        min-height: 100px;
+    }
+
+    .auxo-logo {
+        width: 100px;
+        margin-bottom: 2rem;
+    }
+
+    .content-section {
+        padding: 4rem 1.5rem;
+    }
+
     .content-section h2 {
-        font-size: 2rem;
+        font-size: clamp(1.75rem, 6vw, 2.5rem);
+        margin-bottom: 1rem;
+    }
+
+    .content-section p {
+        font-size: 1rem;
     }
 
     .founders-container {
-        flex-direction: column;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        margin-top: 2.5rem;
+    }
+
+    .founder-card {
+        padding: 2rem;
+    }
+
+    footer {
+        padding: 3rem 1.5rem;
+        font-size: 0.813rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero h1 {
+        font-size: 1.375rem;
+        min-height: 90px;
+    }
+
+    .content-section {
+        padding: 3rem 1rem;
+    }
+
+    .content-section h2 {
+        font-size: 1.625rem;
+    }
+
+    .founder-card {
+        padding: 1.5rem;
     }
 }
