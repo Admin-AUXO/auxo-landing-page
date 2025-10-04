@@ -7,8 +7,8 @@ const CONTENT = {
     typedStrings: [
         "Hello, World!",
         "We're AUXO Data Labs.",
-        "We turn complexity into clarity.",
-        "Our new digital experience is being architected."
+        "We're building something new.",
+        "Our full site is launching soon."
     ],
 
     // Manifesto section
