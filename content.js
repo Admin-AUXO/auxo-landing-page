@@ -7,7 +7,7 @@ const CONTENT = {
     typedStrings: [
         "Hello, World!",
         "We're AUXO Data Labs.",
-        "We're building something new.",
+        "We’re currently bridging data gaps so every decision moves faster",
         "Our full site is launching soon."
     ],
 
@@ -39,7 +39,7 @@ const CONTENT = {
         links: {
             linkedin: {
                 text: "LinkedIn",
-                url: "#"
+                url: "https://www.linkedin.com/company/auxo-data"
             },
             email: {
                 text: "contact@auxodata.com",
