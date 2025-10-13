@@ -12,12 +12,20 @@
     --bg-card: #111111;
     --accent-green: #A3E635;
     --accent-green-dim: #A3E63533;
+    --accent-red: #ef4444;
     --text-primary: #FFFFFF;
     --text-secondary: #A0A0A0;
     --text-tertiary: #666666;
     --font-hero: 'Space Mono', monospace;
     --font-body: 'Inter', sans-serif;
     --font-display: 'Space Grotesk', sans-serif;
+    --font-brand: 'Montserrat', sans-serif;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
 }
 
 body {
@@ -33,6 +41,211 @@ body {
     touch-action: manipulation;
 }
 
+/* ========================================
+   INTRO ANIMATION STYLES
+   ======================================== */
+
+.intro-animation {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    background: var(--bg-primary);
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+}
+
+.intro-animation.transitioning {
+    pointer-events: none;
+}
+
+.intro-animation.complete {
+    display: none;
+}
+
+.stage {
+    position: relative;
+    aspect-ratio: 1/1;
+    width: clamp(320px, min(90vmin, 96vw), 860px);
+    contain: layout paint size;
+    perspective: 1400px;
+    opacity: 0;
+}
+
+.layer {
+    position: absolute;
+    inset: 0;
+}
+
+/* Canvas Container for Matrix Rain */
+.canvas-container {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+}
+
+canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+/* Tic-Tac-Toe Game Elements */
+.grid, .board, .logo {
+    visibility: hidden;
+}
+
+.board {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+}
+
+.cell {
+    position: absolute;
+    width: 33.3333%;
+    height: 33.3333%;
+    display: grid;
+    place-items: center;
+}
+
+.cell[data-i="0"]{left:0;top:0}
+.cell[data-i="1"]{left:33.3333%;top:0}
+.cell[data-i="2"]{left:66.6666%;top:0}
+.cell[data-i="3"]{left:0;top:33.3333%}
+.cell[data-i="4"]{left:33.3333%;top:33.3333%}
+.cell[data-i="5"]{left:66.6666%;top:33.3333%}
+.cell[data-i="6"]{left:0;top:66.6666%}
+.cell[data-i="7"]{left:33.3333%;top:66.6666%}
+.cell[data-i="8"]{left:66.6666%;top:66.6666%}
+
+.glyph {
+    font-family: var(--font-brand);
+    font-weight: 900;
+    font-size: clamp(64px, 11vmin, 100px);
+    line-height: 1;
+    color: var(--text-primary);
+    opacity: 0;
+    will-change: transform, opacity;
+}
+
+.grid {
+    z-index: 1;
+}
+
+.grid path {
+    stroke: var(--accent-green);
+    stroke-width: 7;
+    stroke-linecap: round;
+    fill: none;
+    will-change: stroke-dashoffset;
+}
+
+/* Logo Animation Container */
+.logo {
+    position: absolute;
+    inset: 0;
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo-container {
+    position: relative;
+    width: 65%;
+    height: 65%;
+    flex-shrink: 0;
+}
+
+.logo-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    width: 100%;
+    height: 100%;
+    gap: 2.5%;
+    position: absolute;
+    inset: 0;
+}
+
+.logo-tile {
+    background-color: var(--accent-green);
+    display: grid;
+    place-items: center;
+    border-radius: 0;
+    transform-origin: center center;
+    visibility: hidden;
+}
+
+.logo-char {
+    font-family: var(--font-brand);
+    font-weight: 900;
+    font-size: clamp(6rem, 25vmin, 15rem);
+    color: #000000;
+    line-height: 1;
+}
+
+.logo-caption {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 5%;
+    color: var(--text-primary);
+    flex-shrink: 0;
+}
+
+.reveal-line {
+    width: 100%;
+    height: 1px;
+    background-color: var(--accent-green);
+    transform: scaleX(0);
+    margin-bottom: 1.5em;
+}
+
+.data-text {
+    font-size: clamp(1.8rem, 6vmin, 3.5rem);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    opacity: 0;
+}
+
+.tagline {
+    font-size: clamp(0.9rem, 2.2vmin, 1.4rem);
+    font-weight: 400;
+    opacity: 0;
+    margin-top: 0.75em;
+}
+
+.scanline {
+    position: absolute;
+    left: 0;
+    top: -10%;
+    width: 100%;
+    height: 5%;
+    background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.4), #fff, rgba(255,255,255,0.4), transparent);
+    opacity: 0;
+    filter: blur(2px);
+    z-index: 30;
+}
+
+/* ========================================
+   MAIN SITE STYLES
+   ======================================== */
+
+.main-site {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.8s ease-in-out, visibility 0s linear 0.8s;
+}
+
+.main-site.active {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.8s ease-in-out, visibility 0s linear 0s;
+}
+
 /* Data Flow Background Styling */
 #tsparticles {
     position: fixed;
@@ -46,15 +259,9 @@ body {
     will-change: transform;
 }
 
-@media (max-width: 768px) {
-    #tsparticles {
-        opacity: 0.25;
-    }
-}
-
 /* Hero Section */
 .hero {
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -72,18 +279,53 @@ body {
     z-index: 1;
 }
 
-/* Logo Styling & Animation */
-@keyframes fadeInLogo {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
+/* Hero Logo (2x2 Grid) */
+.hero-logo-container {
+    width: 140px;
+    height: 140px;
+    margin-bottom: 3rem;
+    opacity: 0;
+    transform: scale(0.8);
 }
 
-.auxo-logo {
-    width: 140px;
-    height: auto;
-    margin-bottom: 3rem;
-    animation: fadeInLogo 1s ease-out forwards;
+.hero-logo-container.visible {
+    animation: fadeInHeroLogo 1s ease-out forwards;
+}
+
+@keyframes fadeInHeroLogo {
+    from {
+        opacity: 0;
+        transform: scale(0.8) translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.hero-logo-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    width: 100%;
+    height: 100%;
+    gap: 3.5%;
+}
+
+.hero-logo-tile {
+    background-color: var(--accent-green);
+    display: grid;
+    place-items: center;
+    border-radius: 0;
     filter: drop-shadow(0 0 20px var(--accent-green-dim));
+}
+
+.hero-logo-char {
+    font-family: var(--font-brand);
+    font-weight: 900;
+    font-size: clamp(2.5rem, 8vw, 4rem);
+    color: #000000;
+    line-height: 1;
 }
 
 .hero h1 {
@@ -176,7 +418,7 @@ body {
 .founder-card:hover {
     transform: translateY(-8px);
     border-color: var(--accent-green);
-    box-shadow: 0 20px 40px rgba(0, 255, 135, 0.1);
+    box-shadow: 0 20px 40px rgba(163, 230, 53, 0.1);
 }
 
 .founder-card:hover::before {
@@ -234,23 +476,41 @@ footer a:hover::after {
     width: 100%;
 }
 
-/* Responsive Design */
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+
+/* Tablet & Below */
 @media (max-width: 1024px) {
     .founders-container {
         grid-template-columns: 1fr;
         gap: 2rem;
     }
+
+    .stage {
+        width: clamp(300px, 85vmin, 700px);
+    }
 }
 
+/* Mobile Landscape & Portrait */
 @media (max-width: 768px) {
+    #tsparticles {
+        opacity: 0.25;
+    }
+
     .hero h1 {
         font-size: clamp(1.5rem, 5vw, 2rem);
         min-height: 100px;
     }
 
-    .auxo-logo {
+    .hero-logo-container {
         width: 100px;
+        height: 100px;
         margin-bottom: 2rem;
+    }
+
+    .hero-logo-char {
+        font-size: clamp(1.75rem, 6vw, 2.5rem);
     }
 
     .content-section {
@@ -280,12 +540,40 @@ footer a:hover::after {
         padding: 3rem 1.5rem;
         font-size: 0.813rem;
     }
+
+    /* Mobile optimizations for intro animation */
+    .stage {
+        width: clamp(280px, 88vmin, 600px);
+    }
+
+    .logo-char {
+        font-size: clamp(4rem, 20vmin, 10rem);
+    }
+
+    .glyph {
+        font-size: clamp(48px, 9vmin, 80px);
+    }
+
+    .grid path {
+        stroke-width: 5;
+    }
 }
 
+/* Small Mobile */
 @media (max-width: 480px) {
     .hero h1 {
         font-size: 1.375rem;
         min-height: 90px;
+    }
+
+    .hero-logo-container {
+        width: 90px;
+        height: 90px;
+        margin-bottom: 1.75rem;
+    }
+
+    .hero-logo-char {
+        font-size: 1.5rem;
     }
 
     .content-section {
@@ -298,5 +586,71 @@ footer a:hover::after {
 
     .founder-card {
         padding: 1.5rem;
+    }
+
+    .stage {
+        width: clamp(260px, 92vw, 500px);
+    }
+
+    .logo-char {
+        font-size: clamp(3rem, 18vmin, 8rem);
+    }
+
+    .data-text {
+        font-size: clamp(1.4rem, 5vmin, 2.5rem);
+    }
+
+    .tagline {
+        font-size: clamp(0.75rem, 1.8vmin, 1.1rem);
+    }
+}
+
+/* Landscape Mobile Specific */
+@media (max-height: 500px) and (orientation: landscape) {
+    .stage {
+        width: min(60vh, 90vw);
+    }
+
+    .hero {
+        min-height: auto;
+        padding: 2rem 20px;
+    }
+
+    .hero-logo-container {
+        margin-bottom: 1.5rem;
+    }
+}
+
+/* High DPI Displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .hero-logo-tile, .logo-tile {
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+    }
+}
+
+/* Reduced Motion Accessibility */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+
+    .intro-animation {
+        display: none !important;
+    }
+
+    .main-site {
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+
+    .hero-logo-container {
+        opacity: 1 !important;
+        transform: none !important;
+        animation: none !important;
     }
 }
