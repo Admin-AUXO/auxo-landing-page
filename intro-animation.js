@@ -370,26 +370,55 @@
             // Mark as transitioning
             introContainer.classList.add('transitioning');
 
-            // Fade out caption (DATA text and tagline)
+            // Get hero logo for size calculation
+            const heroLogo = document.getElementById('hero-logo');
+            const heroLogoRect = heroLogo.getBoundingClientRect();
+            const logoContainerRect = document.querySelector('.logo-container').getBoundingClientRect();
+
+            // Calculate scale factor for smooth resize
+            const scaleX = heroLogoRect.width / logoContainerRect.width;
+            const scaleY = heroLogoRect.height / logoContainerRect.height;
+            const scaleFactor = Math.min(scaleX, scaleY);
+
+            // Fade out caption (Data Labs text and tagline) with slight downward motion
             await gsap.to([dataText, tagline, revealLine], {
                 opacity: 0,
-                duration: CONFIG.TRANSITION_FADE_DURATION * 0.5,
-                ease: 'power2.in'
+                y: 20,
+                duration: CONFIG.TRANSITION_FADE_DURATION * 0.6,
+                ease: 'power2.in',
+                stagger: 0.05
             });
 
-            // Fade out the entire intro animation
-            await gsap.to(introContainer, {
+            // Create smooth transition timeline for logo
+            const logoTransitionTimeline = gsap.timeline();
+
+            // Simultaneously: shrink logo with subtle rotation and fade out background
+            logoTransitionTimeline.to(document.querySelector('.logo-container'), {
+                scale: scaleFactor,
+                duration: CONFIG.TRANSITION_FADE_DURATION * 1.2,
+                ease: 'power3.inOut'
+            }, 0);
+
+            logoTransitionTimeline.to(logoTiles, {
+                boxShadow: '0 0 30px rgba(163, 230, 53, 0.4)',
+                duration: CONFIG.TRANSITION_FADE_DURATION * 0.8,
+                ease: 'power2.inOut'
+            }, 0);
+
+            // Fade out the entire intro animation container
+            logoTransitionTimeline.to(introContainer, {
                 opacity: 0,
                 duration: CONFIG.TRANSITION_FADE_DURATION,
                 ease: 'power2.inOut'
-            });
+            }, CONFIG.TRANSITION_FADE_DURATION * 0.4);
+
+            await logoTransitionTimeline;
 
             // Mark as complete and hide
             introContainer.classList.add('complete');
 
             // Show main site and trigger hero logo animation
             const mainSite = document.getElementById('main-site');
-            const heroLogo = document.getElementById('hero-logo');
 
             mainSite.classList.add('active');
             heroLogo.classList.add('visible');
